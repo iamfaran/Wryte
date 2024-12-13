@@ -18,3 +18,10 @@ export const store = configureStore({
     counter: counterReducer,
   },
 })
+
+// we gonna use useSelector and useDispatch so we would need these types in
+// future if we want to use them
+
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
+export type AppStore = typeof store
