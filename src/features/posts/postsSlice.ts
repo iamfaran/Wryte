@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface Post {
+export interface Post {
   id: string
   title: string
   content: string
@@ -22,7 +22,15 @@ const initialState: Post[] = [
 export const postsSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {},
+  reducers: {
+    postAdded(state, action: PayloadAction<Post>) {
+      // mutate the state directly
+      // because it's immutable due
+      // to immer
+      state.push(action.payload)
+    },
+  },
 })
 
+export const { postAdded } = postsSlice.actions
 export default postsSlice.reducer
