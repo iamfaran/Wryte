@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
+import { nanoid } from '@reduxjs/toolkit'
 export interface Post {
   id: string
   title: string
@@ -23,11 +23,15 @@ export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    postAdded(state, action: PayloadAction<Post>) {
-      // mutate the state directly
-      // because it's immutable due
-      // to immer
-      state.push(action.payload)
+    postAdded: {
+      reducer(state, action: PayloadAction<Post>) {
+        state.push(action.payload)
+      },
+      prepare(title: string, content: string) {
+        return {
+          payload: { id: nanoid(), title, content },
+        }
+      },
     },
   },
 })

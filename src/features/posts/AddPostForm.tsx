@@ -1,6 +1,6 @@
 import React from 'react'
 import { nanoid } from '@reduxjs/toolkit'
-import {type Post, postAdded} from './postsSlice'
+import { postAdded} from './postsSlice'
 import { useAppDispatch } from '@/app/hooks'
 // TS types for the input fields
 // See: https://epicreact.dev/how-to-type-a-react-form-on-submit-handler/
@@ -23,13 +23,9 @@ export const AddPostForm = () => {
     const title = elements.postTitle.value
     const content = elements.postContent.value
 
-    const newPost: Post = {
-      id: nanoid(),
-      title,
-      content
-    }
+    
 
-    dispatch(postAdded(newPost))
+    dispatch(postAdded(title, content))
 
     console.log('Values: ', { title, content })
 
