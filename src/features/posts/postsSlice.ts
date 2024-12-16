@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { nanoid } from '@reduxjs/toolkit'
+import type { RootState } from '@/app/store'
+
 export interface Post {
   id: string
   title: string
@@ -47,3 +49,12 @@ export const postsSlice = createSlice({
 
 export const { postAdded, postUpdated } = postsSlice.actions
 export default postsSlice.reducer
+
+// selector for all posts
+// because in case our state changes we just need to change
+// the selector
+
+export const selectAllPosts = (state: RootState) => state.posts
+
+// selector for specific post
+export const selectPostById = (state: RootState, postId: string) => state.posts.find((post) => post.id === postId)
