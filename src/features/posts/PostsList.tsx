@@ -2,6 +2,8 @@ import { useAppSelector } from '@/app/hooks'
 import { Link } from 'react-router-dom'
 import { selectAllPosts } from './postsSlice'
 import { ReactionButtons } from './ReactionButtons'
+import { PostAuthor } from './PostAuthor'
+import { TimeAgo } from '@/components/TimeAgo'
 export const PostsList = () => {
   // Select the `state.posts` value from the store into the component
   const posts = useAppSelector(selectAllPosts)
@@ -13,6 +15,10 @@ export const PostsList = () => {
       <h3>
         <Link to={`/posts/${post.id}`}>{post.title}</Link>
       </h3>
+      <div>
+        <PostAuthor userId={post.user} />
+        <TimeAgo timestamp={post.date} />
+      </div>
       <p className="post-content">{post.content.substring(0, 100)}</p>
       <ReactionButtons post={post} />
     </article>

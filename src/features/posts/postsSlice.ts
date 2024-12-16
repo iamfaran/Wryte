@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { nanoid } from '@reduxjs/toolkit'
 import type { RootState } from '@/app/store'
 import { sub } from 'date-fns'
-
+import { userLoggedOut } from '../auth/authSlice'
 type PostUpdate = Pick<Post, 'id' | 'title' | 'content'>
 
 // this is the type of the state
@@ -90,6 +90,9 @@ export const postsSlice = createSlice({
         existingPost.reactions[reaction]++
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(userLoggedOut, () => [])
   },
 })
 
