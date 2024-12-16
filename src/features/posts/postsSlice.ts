@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { nanoid } from '@reduxjs/toolkit'
 import type { RootState } from '@/app/store'
 import { sub } from 'date-fns'
-import { R } from 'node_modules/msw/lib/core/HttpResponse-DzhqZzTK'
 
 type PostUpdate = Pick<Post, 'id' | 'title' | 'content'>
 
