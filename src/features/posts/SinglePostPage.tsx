@@ -5,6 +5,7 @@ import { selectPostById } from './postsSlice'
 
 import { PostAuthor } from './postsAuthor'
 import { TimeAgo } from '@/components/TimeAgo'
+import { ReactionButtons } from './ReactionButtons'
 
 export const SinglePostPage = () => {
   const { postId } = useParams()
@@ -30,6 +31,8 @@ export const SinglePostPage = () => {
           <TimeAgo timestamp={post.date} />
         </div>
         <p className="post-content">{post.content}</p>
+        <ReactionButtons post={post} />
+
         <Link to={`/editPost/${post.id}`} className="button">
           Edit Post
         </Link>

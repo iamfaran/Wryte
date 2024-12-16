@@ -1,6 +1,7 @@
 import { useAppSelector } from '@/app/hooks'
 import { Link } from 'react-router-dom'
 import { selectAllPosts } from './postsSlice'
+import { ReactionButtons } from './ReactionButtons'
 export const PostsList = () => {
   // Select the `state.posts` value from the store into the component
   const posts = useAppSelector(selectAllPosts)
@@ -13,6 +14,7 @@ export const PostsList = () => {
         <Link to={`/posts/${post.id}`}>{post.title}</Link>
       </h3>
       <p className="post-content">{post.content.substring(0, 100)}</p>
+      <ReactionButtons post={post} />
     </article>
   ))
 
