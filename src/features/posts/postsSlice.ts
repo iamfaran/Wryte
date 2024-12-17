@@ -3,6 +3,22 @@ import { nanoid } from '@reduxjs/toolkit'
 import type { RootState } from '@/app/store'
 import { sub } from 'date-fns'
 import { userLoggedOut } from '../auth/authSlice'
+import { client } from '@/api/client'
+import { createAppAsyncThunk } from '@/app/withTypes'
+
+// create async thunk for fetching posts
+
+export const fetchPosts = createAppAsyncThunk('posts/fetchPosts', async () => {
+  const response = await client.get<Post[]>('/fakeApi/posts')
+  return response.data
+})
+
+// IMportant
+// fetchPosts will have 3 states/properties
+// fetchPosts.pending
+// fetchPosts.fulfilled
+// fetchPosts.rejected
+// we will add these conditions in our extraReducers
 
 // this is when we will edit a post
 
