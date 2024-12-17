@@ -1,5 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit'
-import type { Action } from '@reduxjs/toolkit'
+import { configureStore, Action, ThunkAction } from '@reduxjs/toolkit'
+
 import postsReducer from '@/features/posts/postsSlice'
 import usersReducer from '@/features/users/usersSlice'
 import authReducer from '@/features/auth/authSlice'
@@ -30,3 +30,4 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 export type AppStore = typeof store
+export type AppThunk = ThunkAction<void, RootState, unknown, Action>
