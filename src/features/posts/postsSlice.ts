@@ -21,6 +21,7 @@ export const fetchPosts = createAppAsyncThunk('posts/fetchPosts', async () => {
 // we will add these conditions in our extraReducers
 
 // this is when we will edit a post
+// this below syntax grab the properties from Post interface
 
 type PostUpdate = Pick<Post, 'id' | 'title' | 'content'>
 
@@ -105,9 +106,27 @@ export const postsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(userLoggedOut, () => {
-      return initialState
-    })
+    builder
+      .addCase(userLoggedOut, () => {
+        return initialState
+      })
+      // in second arg state only belongs to this specific slice
+      // in this case posts
+
+      .addCase(fetchPosts.pending, (state, action) => {
+        state.status = 'pending'
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        // Add any fetched posts to the array
+        state.posts.push(...action.payload)
+      })
+      .addCase(fetchPosts.rejected, (state, action) => {
+        state.status = 'failed'
+        // here ?? means if error is null or undefined then set it to 'Unknown Error'
+
+        state.error = action.error.message ?? 'Unknown Error'
+      })
   },
 })
 
