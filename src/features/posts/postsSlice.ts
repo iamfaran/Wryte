@@ -26,6 +26,13 @@ export const fetchPosts = createAppAsyncThunk(
   },
 )
 
+// we create a new async thunk function for New Post
+
+export const addNewPost = createAppAsyncThunk('posts/addNewPost', async (initialPost: NewPost) => {
+  const response = await client.post<Post>('/fakeApi/posts', initialPost)
+  return response.data
+})
+
 // IMportant
 // fetchPosts will have 3 states/properties
 // fetchPosts.pending
@@ -37,6 +44,11 @@ export const fetchPosts = createAppAsyncThunk(
 // this below syntax grab the properties from Post interface
 
 type PostUpdate = Pick<Post, 'id' | 'title' | 'content'>
+
+// again I am explaining what this does
+// it takes the properties from Post interface and make a new type just for those properties
+// it doesn't add any new properties but just use the existing ones we specified
+type NewPost = Pick<Post, 'title' | 'content' | 'user'>
 
 // this is the type of the state
 export interface Reactions {
@@ -84,23 +96,6 @@ export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    postAdded: {
-      reducer(state, action: PayloadAction<Post>) {
-        state.posts.push(action.payload)
-      },
-      prepare(title: string, content: string, userId: string) {
-        return {
-          payload: {
-            id: nanoid(),
-            date: new Date().toISOString(),
-            title,
-            content,
-            user: userId,
-            reactions: initialReactions,
-          },
-        }
-      },
-    },
     postUpdated(state, action: PayloadAction<PostUpdate>) {
       const { id, title, content } = action.payload
       console.log(state)
@@ -140,10 +135,14 @@ export const postsSlice = createSlice({
 
         state.error = action.error.message ?? 'Unknown Error'
       })
+      .addCase(addNewPost.fulfilled, (state, action) => {
+        // here state is the current slice state, and action.payload is the new post that was added
+        state.posts.push(action.payload)
+      })
   },
 })
 
-export const { postAdded, postUpdated, reactionAdded } = postsSlice.actions
+export const { postUpdated, reactionAdded } = postsSlice.actions
 export default postsSlice.reducer
 
 // selector for all posts

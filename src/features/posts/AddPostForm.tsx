@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { selectCurrentUsername } from '@/features/auth/authSlice'
-
-import { postAdded } from './postsSlice'
+import { addNewPost } from './postsSlice'
+import { de } from '@faker-js/faker'
 
 // TS types for the input fields
 // See: https://epicreact.dev/how-to-type-a-react-form-on-submit-handler/
@@ -15,22 +15,43 @@ interface AddPostFormElements extends HTMLFormElement {
   readonly elements: AddPostFormFields
 }
 
+type addRequestStatusType = 'idle' | 'pending'
+
 export const AddPostForm = () => {
+  const [addRequestStatus, setAddRequestStatus] = useState<addRequestStatusType>('idle')
   const dispatch = useAppDispatch()
 
   const userId = useAppSelector(selectCurrentUsername)!
 
-  const handleSubmit = (e: React.FormEvent<AddPostFormElements>) => {
+  const handleSubmit = async (e: React.FormEvent<AddPostFormElements>) => {
     // Prevent server submission
     e.preventDefault()
 
     const { elements } = e.currentTarget
     const title = elements.postTitle.value
     const content = elements.postContent.value
+    const form = e.currentTarget
 
-    dispatch(postAdded(title, content, userId))
+    try {
+      setAddRequestStatus('pending')
 
-    e.currentTarget.reset()
+      // The `unwrap()` method is used here to handle the case where the thunk
+      // is rejected.  The `unwrap()` method will throw an error when the thunk
+      // is rejected, which is then caught by the `catch` block below.
+      //await dispatch(addNewPost({ title, content, user: userId })).unwrap()
+      // IMPORTANT below
+      // * if we don't pass thunk in dispatch then it run synchronously and won't return a promise
+      // * if we pass thunk in dispatch then it run asynchronously and will return a promise
+      // * and we can use `.unwrap()` method to handle the case where the thunk is rejected
+
+      await dispatch(addNewPost({ title, content, user: userId })).unwrap()
+
+      form.reset()
+    } catch (err) {
+      console.error('Failed to save the post: ', err)
+    } finally {
+      setAddRequestStatus('idle')
+    }
   }
 
   return (
