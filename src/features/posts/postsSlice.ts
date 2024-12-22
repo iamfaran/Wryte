@@ -2,10 +2,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { nanoid } from '@reduxjs/toolkit'
 import type { RootState } from '@/app/store'
 import { sub } from 'date-fns'
-import { userLoggedOut } from '../auth/authSlice'
 import { client } from '@/api/client'
 import { createAppAsyncThunk } from '@/app/withTypes'
-
+import { logout } from '../auth/authSlice'
 // create async thunk for fetching posts
 
 export const fetchPosts = createAppAsyncThunk(
@@ -115,7 +114,7 @@ export const postsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(userLoggedOut, () => {
+      .addCase(logout.fulfilled, () => {
         return initialState
       })
       // in second arg state only belongs to this specific slice
