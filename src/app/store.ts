@@ -3,6 +3,7 @@ import { configureStore, Action, ThunkAction } from '@reduxjs/toolkit'
 import postsReducer from '@/features/posts/postsSlice'
 import usersReducer from '@/features/users/usersSlice'
 import authReducer from '@/features/auth/authSlice'
+import notificationsReducer from '@/features/notifications/notificationsSlice'
 
 // interface CounterState {
 //   value: number
@@ -21,6 +22,7 @@ export const store = configureStore({
     posts: postsReducer,
     users: usersReducer,
     auth: authReducer,
+    notifications: notificationsReducer,
   },
 })
 
