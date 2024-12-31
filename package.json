@@ -3,8 +3,13 @@
   "version": "2.0.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@faker-js/faker": "^8",
+    "@fontsource/roboto": "^5.1.1",
     "@mswjs/data": "^0.16",
+    "@mui/icons-material": "^6.3.0",
+    "@mui/material": "^6.3.0",
     "@reduxjs/toolkit": "^2.2",
     "classnames": "^2.2.6",
     "date-fns": "^3",

@@ -4,6 +4,8 @@ import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { selectCurrentUsername } from '@/features/auth/authSlice'
 import { addNewPost } from './postsSlice'
 import { de } from '@faker-js/faker'
+import Button from '@mui/material/Button'
+import LinearProgress from '@mui/material/LinearProgress'
 
 // TS types for the input fields
 // See: https://epicreact.dev/how-to-type-a-react-form-on-submit-handler/
@@ -62,7 +64,16 @@ export const AddPostForm = () => {
         <input type="text" id="postTitle" defaultValue="" required />
         <label htmlFor="postContent">Content:</label>
         <textarea id="postContent" name="postContent" defaultValue="" required />
-        <button>Save Post</button>
+        {/* <Button variant="contained" type="submit" disabled={addRequestStatus === 'pending'}>
+          {addRequestStatus === 'pending' ? 'Saving...' : 'Save Post'}
+        </Button> */}
+        {addRequestStatus == 'pending' ? (
+          <LinearProgress />
+        ) : (
+          <Button variant="contained" type="submit">
+            Save Post
+          </Button>
+        )}
       </form>
     </section>
   )
