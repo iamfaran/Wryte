@@ -15,6 +15,8 @@ export const NotificationsList = () => {
 
   useLayoutEffect(() => {
     console.log(' useLayoutEffect')
+    // it means component did mount
+    // so mark all notifications as read
     dispatch(allNotificationsRead())
   })
 
