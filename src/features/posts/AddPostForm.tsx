@@ -6,6 +6,7 @@ import { addNewPost } from './postsSlice'
 import { de } from '@faker-js/faker'
 import Button from '@mui/material/Button'
 import LinearProgress from '@mui/material/LinearProgress'
+import { TextField } from '@mui/material'
 
 // TS types for the input fields
 // See: https://epicreact.dev/how-to-type-a-react-form-on-submit-handler/
@@ -60,8 +61,10 @@ export const AddPostForm = () => {
     <section>
       <h2>Add a New Post</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="postTitle">Post Title:</label>
-        <input type="text" id="postTitle" defaultValue="" required />
+        {/* <label htmlFor="postTitle">Post Title:</label>
+        <input type="text" id="postTitle" defaultValue="" required /> */}
+        <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+
         <label htmlFor="postContent">Content:</label>
         <textarea id="postContent" name="postContent" defaultValue="" required />
         {/* <Button variant="contained" type="submit" disabled={addRequestStatus === 'pending'}>
@@ -70,7 +73,7 @@ export const AddPostForm = () => {
         {addRequestStatus == 'pending' ? (
           <LinearProgress />
         ) : (
-          <Button variant="contained" type="submit">
+          <Button size="large" variant="contained" type="submit">
             Save Post
           </Button>
         )}
