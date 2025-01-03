@@ -7,7 +7,7 @@ import { de } from '@faker-js/faker'
 import Button from '@mui/material/Button'
 import LinearProgress from '@mui/material/LinearProgress'
 import { TextField } from '@mui/material'
-
+import Stack from '@mui/material/Stack'
 // TS types for the input fields
 // See: https://epicreact.dev/how-to-type-a-react-form-on-submit-handler/
 interface AddPostFormFields extends HTMLFormControlsCollection {
@@ -63,20 +63,33 @@ export const AddPostForm = () => {
       <form onSubmit={handleSubmit}>
         {/* <label htmlFor="postTitle">Post Title:</label>
         <input type="text" id="postTitle" defaultValue="" required /> */}
-        <TextField id="outlined-basic" label="Outlined" variant="outlined" />
 
-        <label htmlFor="postContent">Content:</label>
-        <textarea id="postContent" name="postContent" defaultValue="" required />
+        {/* <label htmlFor="postContent">Content:</label>
+        <textarea id="postContent" name="postContent" defaultValue="" required /> */}
+
+        <Stack spacing={2}>
+          <TextField id="postTitle" name="postTitle" label="Post Title" variant="outlined" required />
+          <TextField
+            id="postContent"
+            name="postContent"
+            label="Content"
+            multiline
+            rows={3}
+            variant="outlined"
+            required
+          />
+          {addRequestStatus == 'pending' ? (
+            <LinearProgress />
+          ) : (
+            <Button sx={{ alignSelf: 'flex-start' }} size="large" variant="contained" type="submit">
+              Save Post
+            </Button>
+          )}
+        </Stack>
+
         {/* <Button variant="contained" type="submit" disabled={addRequestStatus === 'pending'}>
           {addRequestStatus === 'pending' ? 'Saving...' : 'Save Post'}
         </Button> */}
-        {addRequestStatus == 'pending' ? (
-          <LinearProgress />
-        ) : (
-          <Button size="large" variant="contained" type="submit">
-            Save Post
-          </Button>
-        )}
       </form>
     </section>
   )
