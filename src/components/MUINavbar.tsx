@@ -19,9 +19,11 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import { Drawer } from '@mui/material'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
+import { useParams } from 'react-router-dom'
 
 export const MUINavbar = () => {
-  const smallScreen = useMediaQuery('(max-width: 600px)')
+  const smallScreen = useMediaQuery('(max-width: 768px)')
+
   const dispatch = useAppDispatch()
   const user = useAppSelector(selectCurrentUser)
   const numUnreadNotifications = useAppSelector(selectUnreadNotificationsCount)
@@ -39,6 +41,7 @@ export const MUINavbar = () => {
   }
 
   const onLogoutClicked = () => {
+    setAnchorEl(null)
     dispatch(logout())
   }
 
@@ -50,7 +53,7 @@ export const MUINavbar = () => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Redux Essentials Example
+          Wryte
         </Typography>
         {isLoggedIn ? (
           smallScreen ? (
