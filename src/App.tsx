@@ -11,6 +11,7 @@ import { selectCurrentUsername } from './features/auth/authSlice'
 import { UsersList } from './features/users/UsersList'
 import { UserPage } from './features/users/UserPage'
 import { NotificationsList } from './features/notifications/NotificationsList'
+import { MUINavbar } from './components/MUINavbar'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const username = useAppSelector(selectCurrentUsername)
@@ -25,7 +26,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 function App() {
   return (
     <Router>
-      <Navbar />
+      <MUINavbar />
       <div className="App">
         <Routes>
           <Route path="/" element={<LoginPage />} />
