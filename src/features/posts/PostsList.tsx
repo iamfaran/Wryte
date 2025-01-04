@@ -5,7 +5,7 @@ import { ReactionButtons } from './ReactionButtons'
 import { PostAuthor } from './PostAuthor'
 import { TimeAgo } from '@/components/TimeAgo'
 import { useEffect } from 'react'
-import { Spinner } from '@/components/Spinner'
+import { CircularProgress } from '@mui/material'
 export const PostsList = () => {
   const dispatch = useAppDispatch()
   // Select the `state.posts` value from the store into the component
@@ -23,7 +23,7 @@ export const PostsList = () => {
   let content: React.ReactNode
 
   if (postStatus == 'pending') {
-    content = <Spinner />
+    content = <CircularProgress sx={{ display: 'block', margin: '0 auto' }} size="3rem" />
   } else if (postStatus == 'succeeded') {
     // Sort posts in reverse chronological order by datetime string
     const orderedPosts = posts.slice().sort((a, b) => b.date.localeCompare(a.date))
