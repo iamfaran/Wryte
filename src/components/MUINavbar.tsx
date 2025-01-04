@@ -14,8 +14,14 @@ import { logout } from '@/features/auth/authSlice'
 import { fetchNotifications, selectUnreadNotificationsCount } from '@/features/notifications/notificationsSlice'
 import { UserIcon } from './UserIcon'
 import { useState } from 'react'
+import MenuIcon from '@mui/icons-material/Menu'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { Drawer } from '@mui/material'
+import Box from '@mui/material/Box'
+import Divider from '@mui/material/Divider'
 
 export const MUINavbar = () => {
+  const smallScreen = useMediaQuery('(max-width: 600px)')
   const dispatch = useAppDispatch()
   const user = useAppSelector(selectCurrentUser)
   const numUnreadNotifications = useAppSelector(selectUnreadNotificationsCount)
@@ -23,6 +29,7 @@ export const MUINavbar = () => {
   const isLoggedIn = !!user
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [drawer, setDrawer] = useState<boolean>(false)
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -46,34 +53,61 @@ export const MUINavbar = () => {
           Redux Essentials Example
         </Typography>
         {isLoggedIn ? (
-          <>
-            <Button color="inherit" component={Link} to="/posts">
-              Posts
-            </Button>
-            <Button color="inherit" component={Link} to="/users">
-              Users
-            </Button>
-            <Button color="inherit" component={Link} to="/notifications">
-              <Badge badgeContent={numUnreadNotifications} color="error">
-                Notifications
-              </Badge>
-            </Button>
-            <Button color="inherit" onClick={fetchNewNotifications}>
-              Refresh Notifications
-            </Button>
-            <IconButton size="large" edge="end" color="inherit" onClick={handleMenu}>
-              <UserIcon size={32} />
-            </IconButton>
-            {/* Menu takes 3 props  
+          smallScreen ? (
+            <>
+              <Drawer anchor="left" open={drawer} onClose={() => setDrawer(false)}>
+                <Box sx={{ padding: 2, textAlign: 'center', fontWeight: 'bold' }}>{user.name}</Box>
+                <Divider />
+                <Button color="inherit" component={Link} to="/posts">
+                  Posts
+                </Button>
+                <Button color="inherit" component={Link} to="/users">
+                  Users
+                </Button>
+                <Button color="inherit" component={Link} to="/notifications">
+                  <Badge badgeContent={numUnreadNotifications} color="error">
+                    Notifications
+                  </Badge>
+                </Button>
+                <Button color="inherit" onClick={fetchNewNotifications}>
+                  Refresh Notifications
+                </Button>
+              </Drawer>
+
+              <IconButton size="large" edge="end" color="inherit" onClick={() => setDrawer(true)}>
+                <MenuIcon />
+              </IconButton>
+            </>
+          ) : (
+            <>
+              <Button color="inherit" component={Link} to="/posts">
+                Posts
+              </Button>
+              <Button color="inherit" component={Link} to="/users">
+                Users
+              </Button>
+              <Button color="inherit" component={Link} to="/notifications">
+                <Badge badgeContent={numUnreadNotifications} color="error">
+                  Notifications
+                </Badge>
+              </Button>
+              <Button color="inherit" onClick={fetchNewNotifications}>
+                Refresh Notifications
+              </Button>
+              <IconButton size="large" edge="end" color="inherit" onClick={handleMenu}>
+                <UserIcon size={32} />
+              </IconButton>
+              {/* Menu takes 3 props  
               anchorEL - the element that the menu is attached to
               open - whether the menu is open or not
               onClose - what to do when the menu is closed
             */}
-            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-              <MenuItem disabled>{user.name}</MenuItem>
-              <MenuItem onClick={onLogoutClicked}>Log Out</MenuItem>
-            </Menu>
-          </>
+              <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+                <MenuItem disabled>{user.name}</MenuItem>
+                <MenuItem onClick={onLogoutClicked}>Log Out</MenuItem>
+              </Menu>
+            </>
+          )
         ) : null}
       </Toolbar>
     </AppBar>
