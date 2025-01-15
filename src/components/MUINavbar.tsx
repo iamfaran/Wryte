@@ -50,7 +50,7 @@ export const MUINavbar = () => {
   }
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Wryte

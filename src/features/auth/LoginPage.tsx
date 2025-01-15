@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Box, Card, CardContent, Typography, Button, Grid, CircularProgress, Container, Avatar } from '@mui/material'
 import { PersonOutline } from '@mui/icons-material'
@@ -8,13 +8,44 @@ import { selectAllUsers, fetchUsers } from '@/features/users/usersSlice'
 import { login } from './authSlice'
 
 export const LoginPage = () => {
+  const [loading, setLoading] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const users = useAppSelector(selectAllUsers)
   const navigate = useNavigate()
 
+  useEffect(() => {
+    const getUsers = async () => {
+      setLoading(true)
+      try {
+        await dispatch(fetchUsers()).unwrap()
+      } catch (err) {
+        console.error('Failed to fetch users:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    getUsers()
+  }, [dispatch])
+
   const handleLogin = async (userId: string) => {
     await dispatch(login(userId))
     navigate('/posts')
+  }
+
+  if (loading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        sx={{
+          height: 'calc(100vh - 60px)', // 64px is the default MUI AppBar height
+          width: '100%',
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    )
   }
 
   return (
