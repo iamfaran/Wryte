@@ -12,9 +12,20 @@ import { UsersList } from './features/users/UsersList'
 import { UserPage } from './features/users/UserPage'
 import { NotificationsList } from './features/notifications/NotificationsList'
 import { MUINavbar } from './components/MUINavbar'
+import { useEffect } from 'react'
+import { useAppDispatch } from './app/hooks'
+import { logout } from './features/auth/authSlice'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const username = useAppSelector(selectCurrentUsername)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    return () => {
+      console.log('unmounting')
+      dispatch(logout())
+    }
+  }, [dispatch])
 
   if (!username) {
     return <Navigate to="/" replace />

@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '@/app/store'
 import { createAppAsyncThunk } from '@/app/withTypes'
 import { client } from '@/api/client'
-import { log } from 'node:console'
 
 export const login = createAppAsyncThunk('auth/login', async (username: string) => {
   // pass the argument if we want to pass data to the thunk
