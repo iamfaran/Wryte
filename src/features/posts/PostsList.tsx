@@ -60,7 +60,7 @@ export const PostsList = () => {
 
   return (
     <section className="posts-list">
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography sx={{ my: 2 }} variant="h4" component="h2" gutterBottom>
         Posts
       </Typography>
       {content}
