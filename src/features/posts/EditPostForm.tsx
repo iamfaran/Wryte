@@ -1,39 +1,43 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Container, Typography, Box, Card, CardContent, TextField, Button, Paper, Stack } from '@mui/material'
+import { Save as SaveIcon } from '@mui/icons-material'
 
 import { useAppSelector, useAppDispatch } from '@/app/hooks'
-import { postUpdated } from './postsSlice'
-import { selectPostById } from './postsSlice'
-
-// omit form element types
+import { postUpdated, selectPostById } from './postsSlice'
 
 interface EditPostFormFields extends HTMLFormControlsCollection {
   postTitle: HTMLInputElement
   postContent: HTMLTextAreaElement
 }
+
 interface EditPostFormElements extends HTMLFormElement {
   readonly elements: EditPostFormFields
 }
+
 export const EditPostForm = () => {
   const { postId } = useParams()
-
-  const post = useAppSelector((state) => {
-    return selectPostById(state, postId!)
-  })
-
+  const post = useAppSelector((state) => selectPostById(state, postId!))
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   if (!post) {
     return (
-      <section>
-        <h2>Post not found!</h2>
-      </section>
+      <Container maxWidth="md">
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+          <Paper elevation={3}>
+            <Box p={3}>
+              <Typography variant="h5" color="error" textAlign="center">
+                Post not found!
+              </Typography>
+            </Box>
+          </Paper>
+        </Box>
+      </Container>
     )
   }
 
   const onSavePostClicked = (e: React.FormEvent<EditPostFormElements>) => {
-    // Prevent server submission
     e.preventDefault()
 
     const { elements } = e.currentTarget
@@ -47,16 +51,61 @@ export const EditPostForm = () => {
   }
 
   return (
-    <section>
-      <h2>Edit Post</h2>
-      <form onSubmit={onSavePostClicked}>
-        <label htmlFor="postTitle">Post Title:</label>
-        <input type="text" id="postTitle" name="postTitle" defaultValue={post.title} required />
-        <label htmlFor="postContent">Content:</label>
-        <textarea id="postContent" name="postContent" defaultValue={post.content} required />
+    <Container maxWidth="md">
+      <Box py={4}>
+        <Card>
+          <CardContent>
+            <Typography variant="h4" component="h1" gutterBottom>
+              Edit Post
+            </Typography>
 
-        <button>Save Post</button>
-      </form>
-    </section>
+            <Box component="form" onSubmit={onSavePostClicked} noValidate autoComplete="off">
+              <Stack spacing={3}>
+                <TextField
+                  id="postTitle"
+                  name="postTitle"
+                  label="Post Title"
+                  defaultValue={post.title}
+                  required
+                  fullWidth
+                  variant="outlined"
+                  sx={{ mb: 2 }}
+                />
+
+                <TextField
+                  id="postContent"
+                  name="postContent"
+                  label="Content"
+                  defaultValue={post.content}
+                  required
+                  fullWidth
+                  multiline
+                  rows={6}
+                  variant="outlined"
+                />
+
+                <Box display="flex" justifyContent="flex-end">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    startIcon={<SaveIcon />}
+                    sx={{
+                      px: 4,
+                      transition: 'transform 0.2s',
+                      '&:hover': {
+                        transform: 'translateY(-2px)',
+                      },
+                    }}
+                  >
+                    Save Post
+                  </Button>
+                </Box>
+              </Stack>
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
+    </Container>
   )
 }
