@@ -8,14 +8,13 @@ import { selectAllUsers, fetchUsers } from '@/features/users/usersSlice'
 import { login } from './authSlice'
 
 export const LoginPage = () => {
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
   const dispatch = useAppDispatch()
   const users = useAppSelector(selectAllUsers)
   const navigate = useNavigate()
 
   useEffect(() => {
     const getUsers = async () => {
-      setLoading(true)
       try {
         await dispatch(fetchUsers()).unwrap()
       } catch (err) {
@@ -26,11 +25,12 @@ export const LoginPage = () => {
     }
     getUsers()
   }, [dispatch])
-
   const handleLogin = async (userId: string) => {
     await dispatch(login(userId))
     navigate('/posts')
   }
+
+  console.log(loading)
 
   if (loading) {
     return (
